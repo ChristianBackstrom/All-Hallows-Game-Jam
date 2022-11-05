@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
 	{
 		var inputHorizontal = Input.GetAxisRaw("Horizontal");
 		var inputVertical = Input.GetAxisRaw("Vertical");
+		
 		return new Vector3(inputHorizontal, 0, inputVertical).normalized * moveSpeed;
 	}
 
