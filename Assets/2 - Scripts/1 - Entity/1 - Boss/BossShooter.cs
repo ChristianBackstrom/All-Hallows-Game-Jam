@@ -24,7 +24,7 @@ public class BossShooter : MonoBehaviour
 
 	private void Awake()
 	{
-		_animator = GetComponent<Animator>();
+		_animator = _shotSpawnPoint.GetComponent<Animator>();
 	}
 
 	[ContextMenu("Shoot")]

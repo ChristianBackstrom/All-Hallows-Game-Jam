@@ -4,26 +4,16 @@ using UnityEngine;
 
 public class HitboxController : MonoBehaviour
 {
-	[SerializeField] private List<Stats> _insideHitbox = new List<Stats>();
 	private void OnTriggerEnter(Collider other)
 	{
 		if (!other.CompareTag("Player")) return;
 
-		_insideHitbox.Add(other.GetComponent<Stats>());
+		other.GetComponent<Stats>().TakeDamage(2);
 	}
 
-	private void OnTriggerExit(Collider other)
+	private void OnDrawGizmos()
 	{
-		if (!other.CompareTag("Player")) return;
-
-		_insideHitbox.Remove(other.GetComponent<Stats>());
-	}
-
-	public void DealDamage(float damage)
-	{
-		foreach (Stats stats in _insideHitbox)
-		{
-			stats.TakeDamage(damage);
-		}
+		Gizmos.color = Color.red;
+		Gizmos.DrawSphere(transform.position, 0.5f);
 	}
 }

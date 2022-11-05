@@ -9,7 +9,7 @@ public class BossAnimationAttacks : MonoBehaviour
 	private float _attackCooldownTimer = 0;
 	private bool _isAttacking = false;
 
-
+	[SerializeField] private Animator _colliderAnimator;
 	private Animator _animator;
 
 	private void Awake()
@@ -29,6 +29,7 @@ public class BossAnimationAttacks : MonoBehaviour
 		_isAttacking = true;
 		_attackCooldownTimer = 0;
 		_animator.SetTrigger("Swipe");
+		_colliderAnimator.SetTrigger("Swipe");
 		print("Swipe");
 	}
 
@@ -43,6 +44,7 @@ public class BossAnimationAttacks : MonoBehaviour
 			_isAttacking = false;
 			BossController.Instance.EndAttack();
 			_animator.SetTrigger("Idle");
+			_colliderAnimator.SetTrigger("Idle");
 		}
 	}
 }
