@@ -65,12 +65,12 @@ public class BossController : MonoBehaviour
 				break;
 			case BossAttack.Attack2:
 
-				GetComponent<BossShooter>().Shoot();
+				GetComponent<BossAnimationAttacks>().Charge();
 
 				break;
 			case BossAttack.Attack3:
 
-				GetComponent<BossShooter>().Shoot();
+				GetComponent<BossAnimationAttacks>().Swipe();
 
 				break;
 		}
@@ -91,11 +91,13 @@ public class BossController : MonoBehaviour
 		{
 			if (randomPoint < _attacks[i])
 			{
+				_attacks[i] = 1;
 				return i;
 			}
 			else
 			{
 				randomPoint -= _attacks[i];
+				_attacks[i]++;
 			}
 		}
 		return 0;
