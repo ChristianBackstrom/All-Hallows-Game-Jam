@@ -57,19 +57,19 @@ public class BossShooter : Stats
 
 			Quaternion rotation = transform.rotation * Quaternion.Euler(0, startRadius + (_CircleShootData._shootRadius / _CircleShootData._amountOfShots * i), 0);
 
-			GameObject shot = Instantiate(_shotPrefab, _shotSpawnPoint.position, rotation, _shotSpawnPoint);
+			Instantiate(_shotPrefab, _shotSpawnPoint.position, rotation);
 		}
 	}
 
 	private async void LineShoot()
 	{
-		_animator.SetTrigger("LineShoot");
+		_animator.SetTrigger("Patrol");
 
 		for (int i = 0; i < _LineShootData._amountOfShots; i++)
 		{
 			await Task.Delay(_LineShootData._shootDelay);
 
-			GameObject shot = Instantiate(_shotPrefab, _shotSpawnPoint.position, transform.rotation, this.transform);
+			Instantiate(_shotPrefab, _shotSpawnPoint.position, transform.rotation);
 
 		}
 	}
@@ -86,6 +86,7 @@ public class BossShooter : Stats
 		{
 			_isShooting = false;
 			BossController.Instance.EndAttack();
+			_animator.SetTrigger("Idle");
 		}
 	}
 

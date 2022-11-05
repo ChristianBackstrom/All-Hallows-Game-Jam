@@ -5,28 +5,30 @@ using UnityEngine;
 public class BossAnimationAttacks : MonoBehaviour
 {
 	[SerializeField] private float _attackCooldown = 5f;
-	private Animator anim;
+	private Animator _animator;
 
 	private float _attackCooldownTimer = 0;
 	private bool _isAttacking = false;
 
 	private void Awake()
 	{
-		anim = GetComponent<Animator>();
+		_animator = GetComponent<Animator>();
 	}
 
 	public void Charge()
 	{
 		_isAttacking = true;
 		_attackCooldownTimer = 0;
-		anim.SetTrigger("Charge");
+		_animator.SetTrigger("Charge");
+		print("Charge");
 	}
 
 	public void Swipe()
 	{
 		_isAttacking = true;
 		_attackCooldownTimer = 0;
-		anim.SetTrigger("Swipe");
+		_animator.SetTrigger("Swipe");
+		print("Swipe");
 	}
 
 	private void Update()
@@ -39,6 +41,7 @@ public class BossAnimationAttacks : MonoBehaviour
 		{
 			_isAttacking = false;
 			BossController.Instance.EndAttack();
+			_animator.SetTrigger("Idle");
 		}
 	}
 }

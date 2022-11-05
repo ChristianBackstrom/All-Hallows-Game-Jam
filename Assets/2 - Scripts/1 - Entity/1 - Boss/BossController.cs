@@ -30,7 +30,6 @@ public class BossController : MonoBehaviour
 
 		if (_attackCooldownTimer <= _attackCooldown || _isAttacking) return;
 
-		print("Attack");
 
 		_attackCooldownTimer = 0;
 		_currentAttack = (BossAttack)Random.Range(0, 3);
