@@ -9,30 +9,68 @@ public class BossShooter : Stats
 {
 	[Header("References")]
 	[SerializeField] private GameObject _shotPrefab;
+	[SerializeField] private Transform _shotSpawnPoint;
 
 	[Header("Settings")]
-	[SerializeField] private float _shootRadius;
-	[SerializeField] private float _shootPointOffset;
-	[SerializeField] private int _shootDelay;
-	[SerializeField] private float _amountOfShots;
-	[SerializeField] private float _attackLength;
+	[SerializeField] private BulletData _LineShootData;
+	[SerializeField] private BulletData _CircleShootData;
 
+
+	private ShotStyle _currentShotStyle;
 	private float _shootTimer;
 	private bool _isShooting;
 
+	private Animator _animator;
+
+	private void Awake()
+	{
+		_animator = GetComponent<Animator>();
+	}
+
 	[ContextMenu("Shoot")]
-	public async void Shoot()
+	public void Shoot()
 	{
 		_isShooting = true;
 		_shootTimer = 0;
 
+		int shotStyle = Random.Range(0, 2);
 
-		float startRadius = -_shootRadius / 2;
-		for (int i = 0; i < _amountOfShots; i++)
+		if (shotStyle == 0)
 		{
-			await Task.Delay(_shootDelay);
-			Quaternion rotation = transform.rotation * Quaternion.Euler(0, startRadius + (_shootRadius / _amountOfShots * i), 0);
-			GameObject shot = Instantiate(_shotPrefab, transform.position + transform.forward * _shootPointOffset, rotation, this.transform);
+			RadiusShoot();
+			_currentShotStyle = ShotStyle.Radius;
+		}
+		else if (shotStyle == 1)
+		{
+			LineShoot();
+			_currentShotStyle = ShotStyle.Line;
+		}
+	}
+
+	public async void RadiusShoot()
+	{
+		float startRadius = -_CircleShootData._shootRadius / 2;
+
+		for (int i = 0; i < _CircleShootData._amountOfShots; i++)
+		{
+			await Task.Delay(_CircleShootData._shootDelay);
+
+			Quaternion rotation = transform.rotation * Quaternion.Euler(0, startRadius + (_CircleShootData._shootRadius / _CircleShootData._amountOfShots * i), 0);
+
+			GameObject shot = Instantiate(_shotPrefab, _shotSpawnPoint.position, rotation, _shotSpawnPoint);
+		}
+	}
+
+	private async void LineShoot()
+	{
+		_animator.SetTrigger("LineShoot");
+
+		for (int i = 0; i < _LineShootData._amountOfShots; i++)
+		{
+			await Task.Delay(_LineShootData._shootDelay);
+
+			GameObject shot = Instantiate(_shotPrefab, _shotSpawnPoint.position, transform.rotation, this.transform);
+
 		}
 	}
 
@@ -42,10 +80,18 @@ public class BossShooter : Stats
 
 		_shootTimer += Time.deltaTime;
 
-		if (_shootTimer >= _attackLength)
+		float attackLength = _currentShotStyle == ShotStyle.Radius ? _CircleShootData._attackLength : _LineShootData._attackLength;
+
+		if (_shootTimer >= attackLength)
 		{
 			_isShooting = false;
 			BossController.Instance.EndAttack();
 		}
+	}
+
+	private enum ShotStyle
+	{
+		Line,
+		Radius
 	}
 }

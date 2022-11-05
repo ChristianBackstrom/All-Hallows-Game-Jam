@@ -11,7 +11,7 @@ public class BossController : MonoBehaviour
 	[SerializeField] private float _attackCooldown = 15f;
 
 	private float _attackCooldownTimer = 0;
-	private int[] _attacks = new int[3] { 1, 1, 1 };
+	[SerializeField] private int[] _attacks = new int[3] { 1, 1, 1 };
 
 	private void Awake()
 	{
@@ -38,15 +38,15 @@ public class BossController : MonoBehaviour
 
 		int attack = GetRandomAttack();
 
-		if (attack == 1)
+		if (attack == 0)
 		{
 			_currentAttack = BossAttack.Attack1;
 		}
-		else if (attack == 2)
+		else if (attack == 1)
 		{
 			_currentAttack = BossAttack.Attack2;
 		}
-		else if (attack == 3)
+		else if (attack == 2)
 		{
 			_currentAttack = BossAttack.Attack3;
 		}
