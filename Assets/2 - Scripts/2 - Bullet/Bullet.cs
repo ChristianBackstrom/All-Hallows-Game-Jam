@@ -22,9 +22,9 @@ public class Bullet : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.CompareTag("Player"))
+		if (other.TryGetComponent<Stats>(out Stats stats))
 		{
-			other.GetComponent<Stats>().TakeDamage(_damage);
+			stats.TakeDamage(_damage);
 			Destroy(gameObject);
 		}
 	}
