@@ -91,7 +91,7 @@ Material:
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Speed: -0.1
+    - _Speed: -0.01
     - _SrcBlend: 1
     - _Texture_Opacity: 1
     - _UVSec: 0
