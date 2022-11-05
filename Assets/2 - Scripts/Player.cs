@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + transform.forward * 2);
 
         var cursorPosition = GetCursorPosition();
-        if (cursorPosition.HasValue)
+        if (Application.isPlaying && cursorPosition.HasValue)
         {
             Gizmos.DrawWireSphere(cursorPosition.Value, 0.5f);
         }
