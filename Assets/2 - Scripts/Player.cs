@@ -5,12 +5,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 	[SerializeField] private float moveSpeed = 5f;
-	[SerializeField] private Bullet bullet = null;
+	[SerializeField] private GameObject bullet = null;
 	[SerializeField] private bool canMove = true;
 	[SerializeField] private bool canShoot = true;
 	private CharacterController controller;
 
-	[SerializeField] private Transform _bulletSpawn = null;
+	private float shotCooldown = 6f / 13f;
+	private float shotTimer = 0f;
 
 	// Start is called before the first frame update
 	void Start()
@@ -21,6 +22,8 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		shotTimer += Time.deltaTime;
+
 		if (canMove)
 		{
 			UpdateMovement();
@@ -28,8 +31,9 @@ public class Player : MonoBehaviour
 
 		RotateLowerBody();
 
-		if (Input.GetMouseButtonDown(0) && canShoot)
+		if (Input.GetMouseButton(0) && canShoot && shotTimer >= shotCooldown)
 		{
+			shotTimer = 0;
 			Shoot();
 		}
 	}
@@ -78,11 +82,15 @@ public class Player : MonoBehaviour
 	{
 		var cursorPosition = GetCursorPosition();
 		if (!cursorPosition.HasValue) return;
+		if (Time.timeSinceLevelLoad % shotCooldown < .2f && Time.timeSinceLevelLoad % shotCooldown > 0) return;
 
-		var bulletInstance = Instantiate(bullet, transform.position, Quaternion.identity);
+		AudioManager.Instance.Play("Shoot");
 
-		Vector3 bulletTarget = cursorPosition.Value;
-		bulletTarget.y = transform.position.y;
-		bulletInstance.transform.LookAt(bulletTarget);
+		var direction = cursorPosition.Value - transform.position;
+		direction.y = transform.position.y;
+
+		var bulletInstance = Instantiate(bullet, transform.position + direction.normalized, Quaternion.identity);
+
+		bulletInstance.transform.rotation = Quaternion.LookRotation(direction.normalized);
 	}
 }

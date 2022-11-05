@@ -5,10 +5,12 @@ using UnityEngine;
 public class BossAnimationAttacks : MonoBehaviour
 {
 	[SerializeField] private float _attackCooldown = 5f;
-	private Animator _animator;
 
 	private float _attackCooldownTimer = 0;
 	private bool _isAttacking = false;
+
+
+	private Animator _animator;
 
 	private void Awake()
 	{
@@ -20,7 +22,6 @@ public class BossAnimationAttacks : MonoBehaviour
 		_isAttacking = true;
 		_attackCooldownTimer = 0;
 		_animator.SetTrigger("Charge");
-		print("Charge");
 	}
 
 	public void Swipe()

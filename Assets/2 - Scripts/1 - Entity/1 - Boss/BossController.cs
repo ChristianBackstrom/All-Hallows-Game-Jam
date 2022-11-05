@@ -11,7 +11,8 @@ public class BossController : MonoBehaviour
 	[SerializeField] private float _attackCooldown = 15f;
 
 	private float _attackCooldownTimer = 0;
-	[SerializeField] private int[] _attacks = new int[3] { 1, 1, 1 };
+	private int[] _attacks = new int[3] { 1, 1, 1 };
+
 
 	private void Awake()
 	{

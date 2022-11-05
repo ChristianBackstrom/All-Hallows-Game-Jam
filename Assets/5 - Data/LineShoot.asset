@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: LineShoot
   m_EditorClassIdentifier: 
   _shootRadius: 0
-  _shootDelay: 500
+  _shootDelay: 250
   _amountOfShots: 8
   _attackLength: 4
