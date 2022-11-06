@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Stats
 {
 	[SerializeField] private float moveSpeed = 5f;
 	[SerializeField] private GameObject bullet = null;
@@ -22,6 +22,11 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		if (Health <= 0)
+		{
+			Death();
+		}
+
 		shotTimer += Time.deltaTime;
 
 		if (canMove)
@@ -57,7 +62,7 @@ public class Player : MonoBehaviour
 	{
 		var inputHorizontal = Input.GetAxisRaw("Horizontal");
 		var inputVertical = Input.GetAxisRaw("Vertical");
-		
+
 		return new Vector3(inputHorizontal, 0, inputVertical).normalized * moveSpeed;
 	}
 
@@ -93,5 +98,10 @@ public class Player : MonoBehaviour
 		var bulletInstance = Instantiate(bullet, transform.position + direction.normalized, Quaternion.identity);
 
 		bulletInstance.transform.rotation = Quaternion.LookRotation(direction.normalized);
+	}
+
+	private void Death()
+	{
+		UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
 	}
 }
