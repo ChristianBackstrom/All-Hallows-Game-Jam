@@ -3,7 +3,6 @@ using UnityEngine;
 public class Stats : MonoBehaviour
 {
 	[SerializeField] private float _health;
-	[SerializeField] private float _speed;
 
 	public float Health
 	{

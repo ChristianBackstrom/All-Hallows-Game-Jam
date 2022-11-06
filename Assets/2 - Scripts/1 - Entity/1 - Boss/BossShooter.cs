@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 #endif
 
-public class BossShooter : Stats
+public class BossShooter : MonoBehaviour
 {
 	[Header("References")]
 	[SerializeField] private GameObject _shotPrefab;
@@ -24,7 +24,7 @@ public class BossShooter : Stats
 
 	private void Awake()
 	{
-		_animator = GetComponent<Animator>();
+		_animator = _shotSpawnPoint.GetComponent<Animator>();
 	}
 
 	[ContextMenu("Shoot")]
@@ -55,9 +55,11 @@ public class BossShooter : Stats
 		{
 			await Task.Delay(_CircleShootData._shootDelay);
 
-			Quaternion rotation = transform.rotation * Quaternion.Euler(0, startRadius + (_CircleShootData._shootRadius / _CircleShootData._amountOfShots * i), 0);
+			Quaternion rotation = Quaternion.Euler(0, startRadius + i * _CircleShootData._shootRadius / _CircleShootData._amountOfShots, 0);
 
-			Instantiate(_shotPrefab, _shotSpawnPoint.position, rotation);
+			Quaternion targetRotation = _shotSpawnPoint.rotation * rotation;
+
+			Instantiate(_shotPrefab, _shotSpawnPoint.position, targetRotation);
 		}
 	}
 
@@ -69,7 +71,7 @@ public class BossShooter : Stats
 		{
 			await Task.Delay(_LineShootData._shootDelay);
 
-			Instantiate(_shotPrefab, _shotSpawnPoint.position, transform.rotation);
+			Instantiate(_shotPrefab, _shotSpawnPoint.position, _shotSpawnPoint.rotation);
 
 		}
 	}
@@ -89,6 +91,16 @@ public class BossShooter : Stats
 			_animator.SetTrigger("Idle");
 		}
 	}
+
+#if UNITY_EDITOR
+	private void OnDrawGizmos()
+	{
+
+		Gizmos.color = Color.red;
+		Gizmos.DrawSphere(_shotSpawnPoint.position, .5f);
+	}
+
+#endif
 
 	private enum ShotStyle
 	{

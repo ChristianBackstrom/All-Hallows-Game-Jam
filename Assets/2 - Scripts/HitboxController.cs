@@ -1,29 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HitboxController : MonoBehaviour
 {
-	[SerializeField] private List<Stats> _insideHitbox = new List<Stats>();
+	[SerializeField] private int _damage = 3;
 	private void OnTriggerEnter(Collider other)
 	{
 		if (!other.CompareTag("Player")) return;
 
-		_insideHitbox.Add(other.GetComponent<Stats>());
+		other.GetComponent<Stats>().TakeDamage(_damage);
 	}
 
-	private void OnTriggerExit(Collider other)
+	private void OnCollisionEnter(Collision other)
 	{
-		if (!other.CompareTag("Player")) return;
+		if (!other.gameObject.CompareTag("Player")) return;
 
-		_insideHitbox.Remove(other.GetComponent<Stats>());
+		other.gameObject.GetComponent<Stats>().TakeDamage(_damage);
 	}
 
-	public void DealDamage(float damage)
+	private void OnDrawGizmos()
 	{
-		foreach (Stats stats in _insideHitbox)
-		{
-			stats.TakeDamage(damage);
-		}
+		Gizmos.color = Color.red;
+		Gizmos.DrawSphere(transform.position, 0.5f);
 	}
 }
