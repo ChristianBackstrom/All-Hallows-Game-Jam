@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BossController : MonoBehaviour
+public class BossController : Stats
 {
 
 	public static BossController Instance { get; private set; }
@@ -27,6 +27,11 @@ public class BossController : MonoBehaviour
 
 	private void Update()
 	{
+		if (Health <= 0)
+		{
+			Death();
+		}
+
 		_attackCooldownTimer += Time.deltaTime;
 
 		if (_attackCooldownTimer <= _attackCooldown || _isAttacking) return;
@@ -108,9 +113,12 @@ public class BossController : MonoBehaviour
 		_isAttacking = false;
 		_attackCooldownTimer = 0;
 	}
+
+	private void Death()
+	{
+		print("Boss is dead");
+	}
 }
-
-
 public enum BossAttack
 {
 	Attack1,

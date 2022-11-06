@@ -55,8 +55,11 @@ public class BossShooter : MonoBehaviour
 		{
 			await Task.Delay(_CircleShootData._shootDelay);
 
+			Quaternion rotation = Quaternion.Euler(0, startRadius + i * _CircleShootData._shootRadius / _CircleShootData._amountOfShots, 0);
 
-			Instantiate(_shotPrefab, _shotSpawnPoint.position, _shotSpawnPoint.rotation);
+			Quaternion targetRotation = _shotSpawnPoint.rotation * rotation;
+
+			Instantiate(_shotPrefab, _shotSpawnPoint.position, targetRotation);
 		}
 	}
 
